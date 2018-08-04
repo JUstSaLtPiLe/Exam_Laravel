@@ -15,11 +15,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('/admin/cake','CakeController');
-Route::resource('admin/category', 'CategoryController');
-Route::get('/user', 'CategoryController@menu');
-Route::get('/user/{type}', 'CategoryController@filter');
-Route::get('/admin/cake/{id}}/quickEdit', 'CakeController@quickEdit');
+Route::resource('/admin/apartment','ApartmentController');
+Route::resource('admin/district', 'DistrictController');
+Route::get('/user', 'DistrictController@menu');
+Route::get('/user/{type}', 'DistrictController@filter');
+Route::get('/admin/apartment/{id}}/quickEdit', 'ApartmentController@quickEdit');
 
 
 

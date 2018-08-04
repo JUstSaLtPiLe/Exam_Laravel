@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Cake;
-use App\Category;
-use App\Http\Requests\StoreCake;
+use App\Aparment;
+use App\District;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
-use JD\Cloudder\Facades\Cloudder;
 
-class CakeController extends Controller
+
+class DistrictController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,11 +18,10 @@ class CakeController extends Controller
      */
     public function index()
     {
-        $obj = Cake::all();
-        return view('admin.cake.list')
-            -> with('obj',$obj);
+        $objType = District::all();
+        return view('admin.apartment.list')
+            -> with('objType',$objType);
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -30,9 +29,7 @@ class CakeController extends Controller
      */
     public function create()
     {
-        $obj = Category::all();
-        return view('admin.cake.create')
-            -> with('obj',$obj);
+        return view('admin.district.create');
     }
 
     /**
@@ -41,19 +38,14 @@ class CakeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCake $request)
+    public function store(Request $request)
     {
-        $request->validated();
-        Cloudder::upload(Input::file('images'), Input::get('name'));
-        $obj = new Cake();
+        $obj = new District();
         $obj -> name = Input::get('name');
-        $obj -> type = Input::get('type');
-        $obj -> price = Input::get('price');
-        $obj -> quantity = Input::get('quantity');
         $obj -> description = Input::get('description');
-        $obj -> images = Cloudder::secureShow(Input::get('name'));
+        $obj -> images = Input::get('images');
         $obj -> save();
-        return redirect('admin/cake');
+        return redirect('/admin/district');
     }
 
     /**
@@ -64,8 +56,8 @@ class CakeController extends Controller
      */
     public function show($id)
     {
-        $obj = Cake::find($id);
-        return view('admin.cake.show')
+        $obj = District::find($id);
+        return view('admin.district.show')
             -> with('obj',$obj);
     }
 
@@ -77,14 +69,12 @@ class CakeController extends Controller
      */
     public function edit($id)
     {
-        $obj = Cake::find($id);
-        $objType = Category::all();
+        $obj = District::find($id);
         if($obj == null){
             echo "<script>alert('This product does not exist or has been deleted')</script>";
         }
-        return view('admin.cake.edit')
-            -> with('obj',$obj)
-            -> with('objType',$objType);
+        return view('admin.district.edit')
+            -> with('obj',$obj);
     }
 
     /**
@@ -96,17 +86,14 @@ class CakeController extends Controller
      */
     public function update($id)
     {
-        $obj = Cake::find($id);
+        $obj = District::find($id);
         $obj -> name = Input::get('name');
-        $obj -> type = Input::get('type');
-        $obj -> price = Input::get('price');
-        $obj -> quantity = Input::get('quantity');
         $obj -> description = Input::get('description');
         $obj -> images = Input::get('images');
         $obj -> save();
         echo "<script>
                     alert('Update information successfull')
-                    window.location.href = '/admin/cake';
+                    window.location.href = district;
                 </script>";
     }
 
@@ -118,21 +105,24 @@ class CakeController extends Controller
      */
     public function destroy($id)
     {
-        $obj = Cake::find($id);
+        $obj = District::find($id);
         if($obj == null){
             echo "<script>alert('This product does not exist or has been deleted')</script>";
         }
         $obj -> delete();
     }
-
-    public function quickEdit($id){
-        $obj = Cake::find($id);
-        $objType = Category::all();
-        if($obj == null){
-            echo "<script>alert('This product does not exist or has been deleted')</script>";
-        }
-        return view('admin.cake.list')
-            -> with('obj',$obj)
-            -> with('objType',$objType);
+    public function menu(){
+        $objType = District::all();
+        $obj = Aparment::all();
+        return view('user.menu')
+            -> with('objType',$objType)
+            -> with('obj',$obj);
+    }
+    public function filter($type){
+        $obj = DB::select('select * from apartments where address = ?', [$type]);
+        $objType = District::all();
+        return view('user.filteredMenu')
+            ->with('obj',$obj)
+            ->with('objType',$objType);
     }
 }

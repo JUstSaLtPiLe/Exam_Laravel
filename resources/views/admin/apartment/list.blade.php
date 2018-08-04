@@ -30,64 +30,33 @@
                         <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
 
                         <div class="menu-list">
-
                             <ul id="menu-content" class="menu-content collapse out">
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-dashboard fa-lg"></i> Dashboard
-                                    </a>
-                                </li>
                                 <li data-toggle="collapse" data-target="#service" class="collapsed">
-                                    <a href="#"><i class="fa fa-globe fa-lg"></i> Services <span class="arrow"></span></a>
+                                    <a href="#"><i class="fa fa-globe fa-lg"></i> Search by District <span class="arrow"></span></a>
                                 </li>
                                 <ul class="sub-menu collapse" id="service">
-                                    <li><a href="/admin/cake/create">Add new product</a></li>
-                                    <li><a href="/admin/category/create">Add new caterogry</a></li>
-                                    <li><a href="/admin/cake">Show product list</a></li>
-                                    <li><a href="/admin/category">Show category list</a></li>
-                                    <li><a href="/user">Show user menu</a></li>
+                                    @foreach($objType as $item)
+                                        <li><a href="/user/{{$item -> name}}">{{$item -> name}}</a></li>
+                                    @endforeach
                                 </ul>
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-user fa-lg"></i> Profile
-                                    </a>
+                                <li data-toggle="collapse" data-target="#service" class="collapsed">
+                                    <a href="#"><i class="fa fa-globe fa-lg"></i> Search by Price <span class="arrow"></span></a>
                                 </li>
-
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-users fa-lg"></i> Users
-                                    </a>
-                                </li>
+                                <ul class="sub-menu collapse" id="service">
+                                    @foreach($objType as $item)
+                                        <li><a href="#">{{$item -> name}}</a></li>
+                                    @endforeach
+                                </ul>
                             </ul>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-10 nopadding">
-                   <div class="row">
-                       <div class="id test">ID</div>
-                       <div class="images test">Image</div>
-                       <div class="name test">Name</div>
-                       <div class="type test">Type</div>
-                       <div class="price test">Price</div>
-                       <div class="quantity test">Quantity</div>
-                       <div class="description test" style="display: flex">Description</div>
-                       <div class="tool test">Tool</div>
-                   </div>
                     @foreach($obj as $item)
-                        <div class="row" id="row-item-{{$item -> id}}">
-                            <div class="id test test2">{{$item -> id}}</div>
-                            <div class="images test test2"><img src="{{$item -> images}}" style="max-width:100%; max-height:100%;"></div>
-                            <div class="name test test2">{{$item -> name}}</div>
-                            <div class="type test test2">{{$item -> type}}</div>
-                            <div class="price test test2">{{$item -> price}}</div>
-                            <div class="quantity test test2">{{$item -> quantity}}</div>
-                            <div class="description test test2">{{$item -> description}}</div>
-                            <div class="tool test test2">
-                                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#exampleModal"><span class="glyphicon glyphicon-pencil"></span></button>
-                                <button type="button" class="btn btn-link"><span class="glyphicon glyphicon-pencil" onclick="location.href ='/admin/cake/{{$item -> id}}/edit'"></span></button>
-                                <button type="button" class="btn btn-link"><span class="glyphicon glyphicon-eye-open" onclick="location.href ='/admin/cake/{{$item -> id}}'"></span></button>
-                                <button type="button" class="btn btn-link"><span class="glyphicon glyphicon-trash btn-delete" id="{{$item-> id}}"></span></button>
-                            </div>
+                        <div class="card" style="width: 25%; height: 200px; display: inline-block">
+                            <img src="{{$item -> images}}" style="max-width: 100%; max-height: 100%">
+                            {{$item -> name}}
+                            {{$item -> price}}
                         </div>
                     @endforeach
                 </div>
@@ -145,8 +114,6 @@
                 }
             }
         }
-
-
     </script>
 </body>
 </html>

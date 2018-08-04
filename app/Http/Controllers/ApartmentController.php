@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Cake;
-use App\Category;
+use App\Apartment;
+use App\District;
+use App\Http\Requests\StoreApartment;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
+use JD\Cloudder\Facades\Cloudder;
 
-
-class CategoryController extends Controller
+class ApartmentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,10 +18,13 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $obj = Category::all();
-        return view('admin.category.list')
-            -> with('obj',$obj);
+        $obj = Apartment::all();
+        $objType = District::all();
+        return view('admin.apartment.list')
+            -> with('obj',$obj)
+            -> with('objType',$objType);
     }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -29,7 +32,9 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.category.create');
+        $obj = District::all();
+        return view('admin.apartment.create')
+            -> with('obj',$obj);
     }
 
     /**
@@ -38,14 +43,19 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreApartment $request)
     {
-        $obj = new Category();
+        $request->validated();
+        Cloudder::upload(Input::file('images'), Input::get('name'));
+        $obj = new Apartment();
         $obj -> name = Input::get('name');
+        $obj -> type = Input::get('type');
+        $obj -> price = Input::get('price');
+        $obj -> quantity = Input::get('quantity');
         $obj -> description = Input::get('description');
-        $obj -> images = Input::get('images');
+        $obj -> images = Cloudder::secureShow(Input::get('name'));
         $obj -> save();
-        return redirect('/admin/category');
+        return redirect('admin/apartment');
     }
 
     /**
@@ -56,8 +66,8 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        $obj = Category::find($id);
-        return view('admin.category.show')
+        $obj = Apartment::find($id);
+        return view('admin.apartment.show')
             -> with('obj',$obj);
     }
 
@@ -69,12 +79,14 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        $obj = Category::find($id);
+        $obj = Apartment::find($id);
+        $objType = District::all();
         if($obj == null){
             echo "<script>alert('This product does not exist or has been deleted')</script>";
         }
-        return view('admin.category.edit')
-            -> with('obj',$obj);
+        return view('admin.apartment.edit')
+            -> with('obj',$obj)
+            -> with('objType',$objType);
     }
 
     /**
@@ -86,15 +98,17 @@ class CategoryController extends Controller
      */
     public function update($id)
     {
-        $obj = Category::find($id);
+        $obj = Apartment::find($id);
         $obj -> name = Input::get('name');
+        $obj -> type = Input::get('type');
+        $obj -> price = Input::get('price');
+        $obj -> quantity = Input::get('quantity');
         $obj -> description = Input::get('description');
         $obj -> images = Input::get('images');
         $obj -> save();
         echo "<script>
                     alert('Update information successfull')
-                    window.location.href = '/admin/category';
-                </script>";
+                    window.location.href = apartmenapartment               </script>";
     }
 
     /**
@@ -105,24 +119,21 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $obj = Category::find($id);
+        $obj = Apartment::find($id);
         if($obj == null){
             echo "<script>alert('This product does not exist or has been deleted')</script>";
         }
         $obj -> delete();
     }
-    public function menu(){
-        $objType = Category::all();
-        $obj = Cake::all();
-        return view('user.menu')
-            -> with('objType',$objType)
-            -> with('obj',$obj);
-    }
-    public function filter($type){
-        $obj = DB::select('select * from cakes where type = ?', [$type]);
-        $objType = Category::all();
-        return view('user.filteredMenu')
-            ->with('obj',$obj)
-            ->with('objType',$objType);
+
+    public function quickEdit($id){
+        $obj = Apartment::find($id);
+        $objType = District::all();
+        if($obj == null){
+            echo "<script>alert('This product does not exist or has been deleted')</script>";
+        }
+        return view('admin.apartment')
+            -> with('obj',$obj)
+            -> with('objType',$objType);
     }
 }
