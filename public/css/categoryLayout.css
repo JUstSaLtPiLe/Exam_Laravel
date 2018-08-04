@@ -1,0 +1,40 @@
+.nopadding{
+    padding: 0 !important;
+    margin: 0 !important;
+}
+.col-sm-10{
+    float: right;
+}
+.test{
+    border-style: solid;
+    border-width: medium;
+    border-color: lightgray;
+    float: left;
+    text-align: center;
+    margin-right: -4px;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.test2{
+    height: 200px !important;
+}
+.id{
+    width: 10%;
+}
+.images{
+    width: 20%;
+    vertical-align: middle;
+}
+.name{
+    width: 20%;
+}
+.description{
+    width: 30%;
+    text-align: left;
+    display: inherit;
+}
+.tool{
+    width: 20%;
+}

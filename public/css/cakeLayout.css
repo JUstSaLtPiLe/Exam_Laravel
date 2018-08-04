@@ -1,0 +1,49 @@
+.nopadding{
+    padding: 0 !important;
+    margin: 0 !important;
+}
+.col-sm-10{
+    float: right;
+}
+.test{
+    border-style: solid;
+    border-width: medium;
+    border-color: lightgray;
+    float: left;
+    text-align: center;
+    margin-right: -4px;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.test2{
+    height: 200px !important;
+}
+.id{
+    width: 5%;
+}
+.images{
+    width: 15%;
+    vertical-align: middle;
+}
+.name{
+    width: 15%;
+}
+.type{
+    width: 10%;
+}
+.quantity{
+    width: 10%;
+}
+.price{
+    width: 10%;
+}
+.description{
+    width: 20%;
+    text-align: left;
+    display: inherit;
+}
+.tool{
+    width: 15%;
+}
